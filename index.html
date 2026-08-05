@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sanjar | Premium Portfolio</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        background: "#050816",
+                        surface: "#0F172A",
+                        primary: "#00E5FF",
+                        secondary: "#7C3AED",
+                        muted: "#94A3B8",
+                    },
+                    fontFamily: {
+                        display: ['Space Grotesk', 'sans-serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #050816;
+            color: white;
+            cursor: none;
+            overflow-x: hidden;
+        }
+        
+        /* Custom Cursor */
+        #cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #00E5FF;
+            mix-blend-mode: difference;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.2s ease-out;
+            transform: translate(-50%, -50%);
+        }
+        .cursor-hover {
+            transform: translate(-50%, -50%) scale(3) !important;
+            background: rgba(0, 229, 255, 0.2) !important;
+            border: 1px solid #00E5FF;
+        }
+
+        /* Glassmorphism */
+        .glass {
+            background: linear-gradient(145deg, rgba(15, 23, 42, 0.6) 0%, rgba(5, 8, 22, 0.8) 100%);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 229, 255, 0.1);
+        }
+
+        .text-glow {
+            text-shadow: 0 0 20px rgba(0, 229, 255, 0.5);
+        }
+
+        /* Loader */
+        #loader {
+            position: fixed;
+            inset: 0;
+            background: black;
+            z-index: 9998;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .progress-bar-container {
+            width: 250px;
+            height: 2px;
+            background: #0F172A;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #progress-bar {
+            position: absolute;
+            top: 0; left: 0;
+            height: 100%;
+            width: 0%;
+            background: #00E5FF;
+            box-shadow: 0 0 10px #00E5FF;
+        }
+
+        /* Canvas Background */
+        #canvas-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Project Image Hover */
+        .project-card:hover .project-img {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Custom Cursor -->
+    <div id="cursor"></div>
+
+    <!-- Loader -->
+    <div id="loader">
+        <h1 class="text-5xl font-display font-bold tracking-[0.3em] text-white mb-2" id="loader-text">SANJAR</h1>
+        <p class="text-muted text-sm tracking-widest uppercase" id="loader-sub">Initializing...</p>
+        <div class="progress-bar-container">
+            <div id="progress-bar"></div>
+        </div>
+    </div>
+
+    <!-- Background Canvas for Particles -->
+    <canvas id="canvas-bg"></canvas>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass border-b-0 py-4 px-8 flex justify-between items-center transition-all duration-300">
+        <div class="text-2xl font-display font-bold text-white tracking-wider">SANJAR<span class="text-primary">.</span></div>
+        <div class="hidden md:flex gap-8 text-sm font-semibold tracking-wide">
+            <a href="#home" class="hover-trigger hover:text-primary transition-colors">Home</a>
+            <a href="#projects" class="hover-trigger hover:text-primary transition-colors">Projects</a>
+            <a href="#experience" class="hover-trigger hover:text-primary transition-colors">Experience</a>
+            <a href="#contact" class="hover-trigger hover:text-primary transition-colors">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="smooth-wrapper">
+        <div id="smooth-content">
+            
+            <!-- Hero Section -->
+            <section id="home" class="min-h-screen flex items-center px-8 md:px-24 pt-20 relative">
+                <div class="max-w-4xl z-10 hero-content">
+                    <h1 class="text-5xl md:text-8xl font-display font-bold text-white mb-4 leading-tight">
+                        SANJAR <br />
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary text-glow">
+                            Full Stack Developer
+                        </span>
+                    </h1>
+                    <p class="text-xl text-muted mb-10 max-w-lg leading-relaxed">
+                        Building Modern Web Experiences with Apple minimalism, luxury precision, and Cyberpunk aesthetics.
+                    </p>
+                    <div class="flex flex-wrap gap-6">
+                        <a href="#projects" class="hover-trigger px-8 py-3 bg-primary text-background font-semibold rounded-full hover:shadow-[0_0_20px_#00E5FF] transition-all duration-300">
+                            View Projects
+                        </a>
+                        <a href="#contact" class="hover-trigger px-8 py-3 glass text-white rounded-full hover:bg-white/10 transition-all duration-300">
+                            Contact Me
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Projects Section -->
+            <section id="projects" class="py-32 px-8 md:px-24">
+                <h2 class="text-4xl md:text-5xl font-display font-bold mb-20 text-center section-title">Featured Projects</h2>
+                
+                <div class="flex flex-col gap-32 max-w-7xl mx-auto">
+                    <!-- Project 1 -->
+                    <div class="project-card flex flex-col md:flex-row items-center gap-16 group">
+                        <div class="w-full md:w-1/2 glass p-4 rounded-2xl">
+                            <div class="w-full aspect-video bg-surface rounded-lg overflow-hidden relative">
+                                <div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 mix-blend-overlay"></div>
+                                <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80" alt="AutoMarket" class="project-img w-full h-full object-cover transition-transform duration-700">
+                            </div>
+                        </div>
+                        <div class="w-full md:w-1/2 project-info">
+                            <h3 class="text-3xl font-bold mb-4">AutoMarket Classifieds</h3>
+                            <p class="text-muted text-lg mb-6">High-performance vehicle classifieds featuring multi-role authentication, dynamic ad carousels, and modern state management.</p>
+                            <div class="flex gap-3 mb-8 flex-wrap">
+                                <span class="px-4 py-1 text-sm border border-primary/50 rounded-full text-primary bg-primary/10">React</span>
+                                <span class="px-4 py-1 text-sm border border-secondary/50 rounded-full text-secondary bg-secondary/10">Node.js</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 2 -->
+                    <div class="project-card flex flex-col md:flex-row-reverse items-center gap-16 group">
+                        <div class="w-full md:w-1/2 glass p-4 rounded-2xl">
+                            <div class="w-full aspect-video bg-surface rounded-lg overflow-hidden relative">
+                                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80" alt="YUZGRAM" class="project-img w-full h-full object-cover transition-transform duration-700">
+                            </div>
+                        </div>
+                        <div class="w-full md:w-1/2 project-info">
+                            <h3 class="text-3xl font-bold mb-4">YUZGRAM Showcase</h3>
+                            <p class="text-muted text-lg mb-6">Immersive digital branding and promotional showcase with heavy 3D integrations and interactive elements.</p>
+                            <div class="flex gap-3 mb-8 flex-wrap">
+                                <span class="px-4 py-1 text-sm border border-primary/50 rounded-full text-primary bg-primary/10">Three.js</span>
+                                <span class="px-4 py-1 text-sm border border-secondary/50 rounded-full text-secondary bg-secondary/10">Tailwind</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Experience Timeline -->
+            <section id="experience" class="py-32 relative px-8">
+                <h2 class="text-4xl md:text-5xl font-display font-bold mb-20 text-center section-title">Experience</h2>
+                
+                <div class="max-w-4xl mx-auto relative pl-8 md:pl-0">
+                    <!-- The Track -->
+                    <div class="absolute left-[32px] md:left-1/2 top-0 bottom-0 w-[2px] bg-white/10"></div>
+                    
+                    <!-- The Animated Line -->
+                    <div id="timeline-line" class="absolute left-[32px] md:left-1/2 top-0 w-[2px] bg-primary h-0 shadow-[0_0_15px_#00E5FF]"></div>
+                    
+                    <!-- Glowing Car Icon -->
+                    <div id="timeline-car" class="absolute left-[16px] md:left-[calc(50%-16px)] top-0 text-3xl z-10 -mt-4">
+                        🚙
+                    </div>
+
+                    <div class="flex flex-col gap-24">
+                        <div class="timeline-item relative flex flex-col md:flex-row items-center justify-between">
+                            <div class="hidden md:block w-5/12"></div>
+                            <div class="w-full md:w-5/12 ml-12 md:ml-0 glass p-8 rounded-2xl group hover:border-primary/50 transition-colors">
+                                <span class="text-secondary font-display text-xl mb-2 block">2023</span>
+                                <h4 class="text-2xl font-bold mb-2">Started Programming</h4>
+                                <p class="text-muted">Began the journey with core web technologies, building foundational projects.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item relative flex flex-col md:flex-row-reverse items-center justify-between">
+                            <div class="hidden md:block w-5/12"></div>
+                            <div class="w-full md:w-5/12 ml-12 md:ml-0 glass p-8 rounded-2xl group hover:border-primary/50 transition-colors">
+                                <span class="text-secondary font-display text-xl mb-2 block">2024</span>
+                                <h4 class="text-2xl font-bold mb-2">Frontend Development</h4>
+                                <p class="text-muted">Mastered React, Tailwind CSS, and complex UI states for interactive apps.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item relative flex flex-col md:flex-row items-center justify-between">
+                            <div class="hidden md:block w-5/12"></div>
+                            <div class="w-full md:w-5/12 ml-12 md:ml-0 glass p-8 rounded-2xl group hover:border-primary/50 transition-colors">
+                                <span class="text-secondary font-display text-xl mb-2 block">2025</span>
+                                <h4 class="text-2xl font-bold mb-2">Backend Development</h4>
+                                <p class="text-muted">Integrated Node.js, Express, and Database architectures into full systems.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item relative flex flex-col md:flex-row-reverse items-center justify-between">
+                            <div class="hidden md:block w-5/12"></div>
+                            <div class="w-full md:w-5/12 ml-12 md:ml-0 glass p-8 rounded-2xl group hover:border-primary/50 transition-colors">
+                                <span class="text-secondary font-display text-xl mb-2 block">2026</span>
+                                <h4 class="text-2xl font-bold mb-2">Full Stack Developer</h4>
+                                <p class="text-muted">Building scalable, premium, and interactive full-stack web experiences.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer / Contact -->
+            <footer id="contact" class="py-24 text-center border-t border-white/10 mt-20 relative overflow-hidden">
+                <div class="glass absolute inset-0 z-0 opacity-30"></div>
+                <div class="relative z-10">
+                    <h2 class="text-4xl md:text-5xl font-display font-bold mb-8">Let's Build Something Amazing.</h2>
+                    <a href="mailto:contact@sanjar.dev" class="hover-trigger inline-block px-10 py-4 bg-primary text-background font-bold text-lg rounded-full hover:shadow-[0_0_30px_#00E5FF] transition-all duration-300 mb-16">
+                        Get In Touch
+                    </a>
+                    <p class="text-muted">Designed & Developed by Sanjar &copy; 2026</p>
+                </div>
+            </footer>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
+
+    <script>
+        // --- Custom Cursor ---
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        document.querySelectorAll('.hover-trigger').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('cursor-hover'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('cursor-hover'));
+        });
+
+        // --- Loader Animation ---
+        let progress = 0;
+        const progressBar = document.getElementById('progress-bar');
+        const loaderSub = document.getElementById('loader-sub');
+        const loader = document.getElementById('loader');
+
+        const interval = setInterval(() => {
+            progress += Math.floor(Math.random() * 10) + 5;
+            if (progress >= 100) {
+                progress = 100;
+                clearInterval(interval);
+                
+                // Hide loader
+                gsap.to(loader, {
+                    y: "-100%",
+                    duration: 1,
+                    ease: "power4.inOut",
+                    delay: 0.2,
+                    onComplete: initAnimations
+                });
+            }
+            progressBar.style.width = progress + "%";
+            if (progress > 50) loaderSub.innerText = "Loading Experience...";
+        }, 100);
+
+        // --- Smooth Scroll (Lenis) ---
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            mouseMultiplier: 1,
+            smoothTouch: false,
+            touchMultiplier: 2,
+            infinite: false,
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        // --- GSAP Animations ---
+        gsap.registerPlugin(ScrollTrigger);
+
+        function initAnimations() {
+            // Hero
+            gsap.from(".hero-content", {
+                y: 50,
+                opacity: 0,
+                duration: 1,
+                delay: 0.2
+            });
+
+            // Projects
+            gsap.utils.toArray('.project-card').forEach(card => {
+                gsap.from(card, {
+                    scrollTrigger: {
+                        trigger: card,
+                        start: "top 85%",
+                    },
+                    y: 100,
+                    opacity: 0,
+                    duration: 1,
+                    ease: "power3.out"
+                });
+            });
+
+            // Timeline
+            const timelineTrack = document.getElementById('timeline-line');
+            const timelineCar = document.getElementById('timeline-car');
+            
+            let tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: "#experience",
+                    start: "top 60%",
+                    end: "bottom 80%",
+                    scrub: 1,
+                }
+            });
+
+            tl.to(timelineTrack, { height: "100%", ease: "none" }, 0)
+              .to(timelineCar, { top: "100%", ease: "none" }, 0);
+              
+            gsap.utils.toArray('.timeline-item').forEach(item => {
+                gsap.from(item, {
+                    scrollTrigger: {
+                        trigger: item,
+                        start: "top 85%",
+                    },
+                    x: item.classList.contains('md:flex-row-reverse') ? 50 : -50,
+                    opacity: 0,
+                    duration: 0.8
+                });
+            });
+        }
+
+        // --- Canvas Particle Background (Cyberpunk feel) ---
+        const canvas = document.getElementById('canvas-bg');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.speedY = Math.random() * 1 - 0.5;
+                this.color = Math.random() > 0.5 ? '#00E5FF' : '#7C3AED';
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x > width) this.x = 0;
+                if (this.x < 0) this.x = width;
+                if (this.y > height) this.y = 0;
+                if (this.y < 0) this.y = height;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = 0.5;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 100; i++) {
+            particles.push(new Particle());
+        }
+
+        function animateCanvas() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateCanvas);
+        }
+        animateCanvas();
+
+    </script>
+</body>
+</html>
